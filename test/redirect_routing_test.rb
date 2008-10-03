@@ -32,14 +32,26 @@ class RedirectRoutingTest < Test::Unit::TestCase
     assert_response 302
   end
   
+  def test_redirect_controller_with_hash_and_conditions
+    get :redirect, :args => [{ :controller => "events", :conditions => { :method => :get } }]
+    assert_redirected_to :controller => "events"
+    assert_response 302
+  end
+  
   def test_redirect_controller_with_string
     get :redirect, :args => ["http://pinds.com"]
     assert_redirected_to "http://pinds.com"
     assert_response 302
   end
-
+  
   def test_permanent_redirect_controller_with_hash
     get :redirect, :args => [{ :controller => "events", :permanent => true }]
+    assert_redirected_to :controller => "events"
+    assert_response 301
+  end
+  
+  def test_permanent_redirect_controller_with_hash_and_conditions
+    get :redirect, :args => [{ :controller => "events", :conditions => { :method => :get }, :permanent => true }]
     assert_redirected_to :controller => "events"
     assert_response 301
   end
