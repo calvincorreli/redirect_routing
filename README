@@ -33,8 +33,6 @@ But more concretely, because there's no good alternative unless you're using Apa
 * Manually create a controller for the sole purpose of redirecting, or
 * Tack the redirect onto another controller, which isn't very RESTful
 
-If there's demand, I'll add a switch for a permanent redirect, but I don't have the need yet.
-
 If you know of a simpler way to do this, please let me know.
 
 Credits
@@ -49,3 +47,4 @@ Changelog
 * Updated to Rails Edge [Manfred Stienstra]
 * Support for 301 redirects [Gioele Barabucci]
 * Silence warning about missing helper [Tim Connor]
+* Gobble up options[:conditions], so it doesn't get included in the URL redirected to [guillaumegentil]
