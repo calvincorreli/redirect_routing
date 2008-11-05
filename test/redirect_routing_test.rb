@@ -20,9 +20,17 @@ class RedirectRoutingTest < Test::Unit::TestCase
         map.redirect 'oldurl', 'newurl', :permanent => true
       end
       
-      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => [{ 'controller' => "events" }] }, "/")
-      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["http://pinds.com"] }, "/test")
-      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["newurl", {'permanent' => true}] }, "/oldurl")
+      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => [{ 'controller' => "events" }] }, { :path => '/', :method => :get})
+      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["http://pinds.com"] }, { :path => '/test', :method => :get})
+      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["newurl", {'permanent' => true}] }, { :path => '/oldurl', :method => :get})
+    end
+  end
+  
+  def test_only_get_requests_are_allowed
+    [:post, :put, :delete].each do |method|
+      assert_raises(ActionController::MethodNotAllowed) do
+        assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => [{ 'controller' => "events" }] }, { :path => '/', :method => method})
+      end
     end
   end
   
